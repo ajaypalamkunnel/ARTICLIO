@@ -1,0 +1,44 @@
+{
+  "name": "articlio",
+  "version": "1.0.0",
+  "description": "Artical feed application",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "Ajay ps",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "logger": "^0.0.1",
+    "mongoose": "^8.15.1",
+    "morgan": "^1.10.0",
+    "nodemailer": "^7.0.3",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/mongoose": "^5.11.96",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.0.0",
+    "@types/nodemailer": "^6.4.17",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  }
+}
