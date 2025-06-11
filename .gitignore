@@ -13,6 +13,7 @@ coverage/
 
 # Environment files
 .env
+.env.*
 Backend/.env.development
 Backend/.env.production
 
