@@ -13,7 +13,7 @@ coverage/
 
 # Environment files
 .env
-.env.*  # includes .env.development, .env.production, etc.
+/Backend/.env.*  # includes .env.development, .env.production, etc.
 
 # Logs
 logs/
