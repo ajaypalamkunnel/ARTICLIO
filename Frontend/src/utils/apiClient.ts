@@ -23,9 +23,10 @@ export async function apiRequest<T>(
         };
     } catch (error: unknown) {
         let message = "An unexpected error occurred.";
-
+        console.log("❌",error);
+        
         if (axios.isAxiosError(error)) {
-            message = error.response?.data?.message || message;
+            message = error.response?.data || message;
         }
 
         return {

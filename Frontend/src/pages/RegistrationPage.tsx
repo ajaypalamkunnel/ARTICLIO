@@ -12,7 +12,10 @@ import {
 } from "lucide-react";
 import type { RegistrationFormData } from "../types/user";
 import type { Category } from "../types/category";
-import { getallCategories } from "../services/userService";
+import { getallCategories, registration } from "../services/userService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import useAuthStore from "../store/userStore";
 
 const RegistrationPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +27,8 @@ const RegistrationPage: React.FC = () => {
   const limit = 7;
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const { setTempEmail } = useAuthStore();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -35,35 +40,34 @@ const RegistrationPage: React.FC = () => {
   const password = watch("password");
 
   const loadCategory = async () => {
-  if (loading || !hasMore) return; // prevent multiple concurrent calls
+    if (loading || !hasMore) return; // prevent multiple concurrent calls
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const currentSkip = categories.length; // derive skip dynamically
-    const response = await getallCategories(currentSkip, limit);
+    try {
+      const currentSkip = categories.length; // derive skip dynamically
+      const response = await getallCategories(currentSkip, limit);
 
-    if (response.success && response.data) {
-      
-      setCategories((prev) => {
-        const newCategories = response.data!.filter(
-          (cat) => !prev.some((existing) => existing._id === cat._id)
-        );
-        return [...prev, ...newCategories];
-      });
+      if (response.success && response.data) {
+        setCategories((prev) => {
+          const newCategories = response.data!.filter(
+            (cat) => !prev.some((existing) => existing._id === cat._id)
+          );
+          return [...prev, ...newCategories];
+        });
 
-      if (response.data.length < limit) {
-        setHasMore(false); // no more data
+        if (response.data.length < limit) {
+          setHasMore(false); // no more data
+        }
+      } else {
+        console.error(response.message);
       }
-    } else {
-      console.error(response.message);
+    } catch (error) {
+      console.error("Error loading categories:", error);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error loading categories:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     loadCategory();
@@ -76,9 +80,20 @@ const RegistrationPage: React.FC = () => {
       articlePreferences: selectedPreferences,
     };
 
-    console.log("Registration data:", formData);
-    // Handle registration logic here
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Mock API call
+    try {
+      setTempEmail(formData.email);
+      const response = await registration(formData);
+
+      if (response.success) {
+        toast.success("OTP sent to email");
+        navigate("/otp-verification");
+      } else {
+        toast.error(response.message || "Registration failed.");
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      toast.error("Registration failed.");
+    }
   };
 
   const togglePreference = (preference: string) => {
@@ -328,7 +343,7 @@ const RegistrationPage: React.FC = () => {
               <p className="text-sm text-gray-600 mb-4">
                 Select topics you're interested in to personalize your feed
               </p>
-               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {categories.map((category) => (
                   <button
                     key={category._id}
@@ -347,7 +362,6 @@ const RegistrationPage: React.FC = () => {
                   </button>
                 ))}
               </div>
-              
 
               {selectedPreferences.length === 0 && (
                 <p className="mt-2 text-sm text-amber-600">
@@ -357,17 +371,17 @@ const RegistrationPage: React.FC = () => {
             </div>
 
             {hasMore && (
-                <div className="flex justify-center mt-4">
-                  <button
-                    type="button"
-                    onClick={loadCategory}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    disabled={loading}
-                  >
-                    {loading ? "Loading..." : "Load More"}
-                  </button>
-                </div>
-              )}
+              <div className="flex justify-center mt-4">
+                <button
+                  type="button"
+                  onClick={loadCategory}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  disabled={loading}
+                >
+                  {loading ? "Loading..." : "Load More"}
+                </button>
+              </div>
+            )}
 
             {/* Submit Button */}
             <button

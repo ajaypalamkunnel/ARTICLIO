@@ -1,6 +1,7 @@
 // import { API_PREFIX } from "../constants/apiRoutes";
 import type { ApiResponse } from "../types/apiResponse";
 import type { Category } from "../types/category";
+import type { RegistrationFormData } from "../types/user";
 import { apiRequest } from "../utils/apiClient";
 
 export const getallCategories = async (
@@ -12,3 +13,35 @@ export const getallCategories = async (
         "GET"
     );
 };
+
+
+
+export const registration = async(formData:RegistrationFormData):Promise<ApiResponse<RegistrationFormData>> =>{
+
+    return apiRequest<RegistrationFormData>(
+        `/registration`,
+        "POST",
+        formData
+    )
+
+}
+
+
+export const verifyOtp = async(otp:string,email:string):Promise<ApiResponse<void>>=>{
+
+    return apiRequest(
+        '/verify-otp',
+        'POST',
+        {otp,email}
+    )
+
+}
+
+
+export const resendOtp = async(email:string):Promise<ApiResponse<void>>=>{
+    return apiRequest(
+        '/resend-otp',
+        'POST',
+        {email}
+    )
+}

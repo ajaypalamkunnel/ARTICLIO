@@ -96,14 +96,18 @@ class UserController implements IUserController {
                     .json({ error: "Email and OTP are required" });
             }
 
-            await this._userService.verifyOtp(email,otp)
+            await this._userService.verifyOtp(email, otp)
 
             return res.status(StatusCode.OK).json({
-                 message: "OTP verified successfully. Your account is now activated.",
+                success: true,
+                message: "OTP verified successfully. Your account is now activated.",
             })
 
 
         } catch (error) {
+
+            console.log("===>",error);
+            
 
             return res
                 .status(
@@ -117,7 +121,7 @@ class UserController implements IUserController {
                         : ERROR_MESSAGES.INTERNAL_SERVER_ERROR
                 );
 
-         }
+        }
     }
 
 

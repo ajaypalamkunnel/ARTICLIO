@@ -15,6 +15,7 @@ type AuthState = {
     isAuthenticated: boolean;
     isLoading: boolean;
     error: string | null;
+    tempEmail?: string | null;
 };
 
 type AuthActions = {
@@ -24,6 +25,8 @@ type AuthActions = {
     setError: (error: string | null) => void;
     updateUser: (user: Partial<User>) => void;
     updateTokens: (accessToken: string) => void;
+    setTempEmail: (email: string) => void
+    clearTempEmail: () => void;
 };
 
 const useAuthStore = create<AuthState & AuthActions>()(
@@ -44,7 +47,8 @@ const useAuthStore = create<AuthState & AuthActions>()(
                     error: null,
                 });
             },
-
+            setTempEmail: (email) => set({ tempEmail: email }),
+            clearTempEmail: () => set({ tempEmail: null }),
             logout: () => {
                 set({
                     user: null,
