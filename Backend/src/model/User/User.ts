@@ -1,7 +1,7 @@
 import { Document, model, ObjectId, Schema, Types } from "mongoose";
 
 export interface IUser extends Document {
-   _id: ObjectId
+  _id: ObjectId
   firstName: string;
   lastName: string;
   email: string;
@@ -13,9 +13,10 @@ export interface IUser extends Document {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
-  otp?:string | null;
-  otpExpires?:Date |null ;
-  isVerified:Boolean
+  otp?: string | null;
+  otpExpires?: Date | null;
+  isVerified: Boolean
+  refreshToken?: string
 }
 
 const UserSchema = new Schema<IUser>(
@@ -67,7 +68,9 @@ const UserSchema = new Schema<IUser>(
     otp: { type: String },
     otpExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
+    refreshToken: { type: String }
   },
+
   {
     timestamps: true,
   }

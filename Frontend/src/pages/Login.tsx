@@ -1,47 +1,72 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Eye, EyeOff, Mail, Phone, Lock, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import { login } from '../services/userService';
+import useAuthStore from '../store/userStore';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-interface LoginFormData {
-  identifier: string; // Can be email or phone
+export interface LoginFormData {
+  email: string;
   password: string;
-  rememberMe: boolean;
+  rememberMe?: boolean;
 }
 
 const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginType, setLoginType] = useState<'email' | 'phone'>('email');
+  const setAuthStore  = useAuthStore()
+  const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    setError,
   } = useForm<LoginFormData>();
 
   const onSubmit = async (data: LoginFormData) => {
     console.log('Login data:', data);
-    console.log('Login type:', loginType);
-    // Handle login logic here
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Mock API call
-  };
+    try {
 
-  const getIdentifierValidation = () => {
-    if (loginType === 'email') {
-      return {
-        required: 'Email is required',
-        pattern: {
-          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-          message: 'Invalid email address'
-        }
-      };
-    } else {
-      return {
-        required: 'Phone number is required',
-        pattern: {
-          value: /^[0-9]{10}$/,
-          message: 'Phone number must be 10 digits'
-        }
-      };
+      const response = await login(data)
+
+      console.log("===>",response);
+      
+
+      if (response.success && response.data) {
+       const { accessToken, user } = response.data;
+
+       console.log("data got : ",accessToken,user);
+       
+
+       setAuthStore.login(
+        {
+          _id:user._id!,
+          username:`${user.firstName || ''} ${user.lastName || ''}`,
+          email:user.email || "",
+          profileImage: '', 
+          preferences: [],  
+        },
+        accessToken
+       )
+
+       toast.success('Login successful!');
+        navigate('/');
+        
+      }else{
+        toast.error(response.message || 'Login failed.');
+      }
+      
+    } catch (error:any) {
+      console.error(error);
+
+      if (error?.response?.status === 400) {
+        setError("email", { message: "Invalid email or password" });
+        setError("password", { message: "Invalid email or password" });
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+      
     }
   };
 
@@ -57,60 +82,31 @@ const LoginPage: React.FC = () => {
         {/* Login Form */}
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="space-y-6">
-            {/* Login Type Toggle */}
-            <div className="flex bg-gray-100 rounded-lg p-1">
-              <button
-                type="button"
-                onClick={() => setLoginType('email')}
-                className={`flex-1 flex items-center justify-center py-2 px-3 rounded-md text-sm font-medium transition-colors ${
-                  loginType === 'email'
-                    ? 'bg-white text-blue-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <Mail className="w-4 h-4 mr-2" />
-                Email
-              </button>
-              <button
-                type="button"
-                onClick={() => setLoginType('phone')}
-                className={`flex-1 flex items-center justify-center py-2 px-3 rounded-md text-sm font-medium transition-colors ${
-                  loginType === 'phone'
-                    ? 'bg-white text-blue-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                Phone
-              </button>
-            </div>
 
-            {/* Identifier Field */}
+            {/* Email Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {loginType === 'email' ? 'Email Address' : 'Phone Number'}
+                Email Address
               </label>
               <div className="relative">
-                {loginType === 'email' ? (
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                ) : (
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                )}
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
-                  {...register('identifier', getIdentifierValidation())}
-                  type={loginType === 'email' ? 'email' : 'tel'}
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Invalid email address'
+                    }
+                  })}
+                  type="email"
                   className={`w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                    errors.identifier ? 'border-red-500' : 'border-gray-300'
+                    errors.email ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder={
-                    loginType === 'email' 
-                      ? 'Enter your email address' 
-                      : 'Enter your phone number'
-                  }
+                  placeholder="Enter your email address"
                 />
               </div>
-              {errors.identifier && (
-                <p className="mt-1 text-sm text-red-600">{errors.identifier.message}</p>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
               )}
             </div>
 
@@ -184,17 +180,6 @@ const LoginPage: React.FC = () => {
                 </>
               )}
             </button>
-
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              
-            </div>
-
-            {/* Social Login Buttons */}
-          
           </div>
 
           {/* Registration Link */}

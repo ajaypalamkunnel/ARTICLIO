@@ -11,6 +11,12 @@ class UserRepository extends BaseRepository<IUser> implements IUserRepositroy{
     async findUserByEmail(email: string): Promise<IUser | null> {
         return await UserModel.findOne({email})
     }
+    async updateRefreshToken(
+        userId: string,
+        refreshToken: string
+    ): Promise<IUser | null> {
+        return await UserModel.findByIdAndUpdate(userId, { refreshToken });
+    }
 
 }
 

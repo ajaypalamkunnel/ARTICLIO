@@ -34,5 +34,9 @@ router.post("/verify-otp",(req,res)=>{
     userController.verifyOtp(req,res)
 })
 
+router.post("/login",(req,res)=>{
+    userController.postLogin(req,res)
+})
+
 
 export default router

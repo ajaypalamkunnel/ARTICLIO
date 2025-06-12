@@ -1,7 +1,8 @@
 // import { API_PREFIX } from "../constants/apiRoutes";
+import type { LoginFormData } from "../pages/Login";
 import type { ApiResponse } from "../types/apiResponse";
 import type { Category } from "../types/category";
-import type { RegistrationFormData } from "../types/user";
+import type { IUser, RegistrationFormData } from "../types/user";
 import { apiRequest } from "../utils/apiClient";
 
 export const getallCategories = async (
@@ -43,5 +44,14 @@ export const resendOtp = async(email:string):Promise<ApiResponse<void>>=>{
         '/resend-otp',
         'POST',
         {email}
+    )
+}
+
+
+export const login = async(data:LoginFormData):Promise<ApiResponse<{ accessToken: string, user: Partial<IUser> }>>=>{
+    return apiRequest<{ accessToken: string, user: Partial<IUser> }>(
+        '/login',
+        'POST',
+        data
     )
 }

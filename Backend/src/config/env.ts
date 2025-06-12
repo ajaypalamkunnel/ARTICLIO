@@ -14,8 +14,8 @@ export const config = {
     nodeEnv: process.env.NODE_ENV || 'development',
     accessSecret:process.env.ACCESS_TOKEN_SECRET as string,
     refreshSecret:process.env.REFRESH_TOKEN_SECRET as string,
-    accessTokenExpiry:process.env.ACCESS_TOKEN_EXPIRY as string,
-    refreshTokenExpiry:process.env.REFRESH_TOKEN_EXPIRY as string,
+    accessTokenExpiry: parseInt(process.env.ACCESS_TOKEN_EXPIRY || "900000"), // 15min default
+    refreshTokenExpiry: parseInt(process.env.REFRESH_TOKEN_EXPIRY || "86400000"), // 1day default
     smtp_host:process.env.SMTP_HOST as string,
     smtp_port:process.env.SMTP_PORT as string,
     smtp_user:process.env.SMTP_USER as string,

@@ -4,6 +4,7 @@ import { BaseRepository } from "../../../repositories/base/BaseRepository";
 import { IUserRepositroy } from "../../../repositories/interface/User/IUserRepository";
 import { CustomError } from "../../../utils/CustomError";
 import { sendOTPEmail } from "../../../utils/emailUtils";
+import JWTUtils from "../../../utils/jwtUtils";
 import PasswordUtils from "../../../utils/PasswordUtils";
 import { IUserService } from "../../interface/User/IUserService";
 
@@ -13,6 +14,7 @@ class UserService implements IUserService {
     constructor(userRepository: IUserRepositroy) {
         this._userRepository = userRepository;
     }
+    
 
     private generateOTP(): string {
         return Math.floor(10000 + Math.random() * 900000).toString();
@@ -127,6 +129,62 @@ class UserService implements IUserService {
             } else {
                 throw new CustomError(
                     "OTP Verification erro",
+                    StatusCode.INTERNAL_SERVER_ERROR
+                );
+            }
+        }
+    }
+
+
+
+    async loginUser(email: string, password: string): Promise<{ user: IUser | null; accessToken: string; refreshToken: string; }> {
+        try {
+            
+            const user = await this._userRepository.findUserByEmail(email)
+
+            if(!user){
+                throw new CustomError("Invalid email or password.",StatusCode.BAD_REQUEST)
+            }
+
+            if(!user.isActive){
+                throw new CustomError("signup not completed",StatusCode.BAD_REQUEST)
+            }
+            
+            if(!user.isVerified){
+                throw new CustomError("signup not completed",StatusCode.BAD_REQUEST)  
+            }
+
+            const isMatch = await PasswordUtils.comparePassword(
+                password,
+                user.password
+            )
+            
+            if(!isMatch){
+                throw new CustomError("Invalid email or password.",StatusCode.BAD_REQUEST)
+            }
+
+
+            const accessToken = JWTUtils.generateAccessToken({
+                userId:user._id,
+                email:user.email
+            })
+
+            const refreshToken = JWTUtils.generateRefreshToken({userId:user._id})
+
+            await this._userRepository.updateRefreshToken(
+                user._id.toString(),
+                refreshToken
+            )
+
+
+            return {accessToken,refreshToken,user}
+
+        } catch (error) {
+              if (error instanceof CustomError) {
+                throw error;
+            } else {
+                throw new CustomError(
+                    "Login service error",
                     StatusCode.INTERNAL_SERVER_ERROR
                 );
             }

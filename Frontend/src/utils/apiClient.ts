@@ -17,9 +17,12 @@ export async function apiRequest<T>(
             ...config,
         });
 
+        console.log("Response : ",response);
+        
+
         return {
             success: true,
-            data: response.data.data,
+            data: response.data as T
         };
     } catch (error: unknown) {
         let message = "An unexpected error occurred.";

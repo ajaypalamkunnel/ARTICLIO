@@ -12,7 +12,7 @@ const OTPVerification = () => {
   const [isResendActive, setIsResendActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
-  const { tempEmail } = useAuthStore();
+  const { tempEmail, clearTempEmail } = useAuthStore();
   const navigate = useNavigate();
   // Timer effect
   useEffect(() => {
@@ -80,8 +80,8 @@ const OTPVerification = () => {
 
     try {
       const response = await resendOtp(tempEmail);
-        console.log(response);
-        
+      console.log(response);
+
       if (response.success) {
         toast.success("OTP resent successfully");
         setOtp(["", "", "", "", "", ""]);
@@ -114,6 +114,7 @@ const OTPVerification = () => {
 
       if (response.success) {
         toast.success("OTP Verified Successfully");
+
         navigate("/login");
       } else {
         toast.error(response.message || "Invalid OTP");
@@ -123,6 +124,7 @@ const OTPVerification = () => {
       toast.error("Unexpected error occurred while verifying OTP");
     } finally {
       setIsLoading(false);
+      clearTempEmail();
     }
   };
 
