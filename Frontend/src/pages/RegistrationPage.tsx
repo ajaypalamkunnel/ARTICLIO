@@ -48,15 +48,18 @@ const RegistrationPage: React.FC = () => {
       const currentSkip = categories.length; // derive skip dynamically
       const response = await getallCategories(currentSkip, limit);
 
-      if (response.success && response.data) {
+      console.log("===>",response);
+      
+
+      if (response.success && response.data?.data) {
         setCategories((prev) => {
-          const newCategories = response.data!.filter(
+          const newCategories = response.data?.data.filter(
             (cat) => !prev.some((existing) => existing._id === cat._id)
           );
-          return [...prev, ...newCategories];
+          return [...prev, ...newCategories!];
         });
 
-        if (response.data.length < limit) {
+        if (response.data.data.length < limit) {
           setHasMore(false); // no more data
         }
       } else {

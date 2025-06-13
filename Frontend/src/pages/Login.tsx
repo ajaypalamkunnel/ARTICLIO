@@ -47,8 +47,10 @@ const LoginPage: React.FC = () => {
           profileImage: '', 
           preferences: [],  
         },
-        accessToken
+        accessToken,
        )
+       setAuthStore.isAuthenticated = true
+       
 
        toast.success('Login successful!');
         navigate('/');

@@ -20,6 +20,11 @@ export const config = {
     smtp_port:process.env.SMTP_PORT as string,
     smtp_user:process.env.SMTP_USER as string,
     smtp_pass:process.env.SMTP_PASS as string,
+    cloudinary_cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
+    cloudinary_api_key:process.env.CLOUDINARY_API_KEY,
+    cloudinary_api_secret:process.env.CLOUDINARY_API_SECRET
+
+
 
 }
 

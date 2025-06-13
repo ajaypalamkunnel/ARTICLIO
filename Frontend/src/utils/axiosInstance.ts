@@ -49,7 +49,44 @@ const axiosInstance = axios.create({
     withCredentials: true,
 });
 
+export const axiosInstanceMultiPart = axios.create({
+     baseURL: API_BASE_URL,
+    headers: {
+        "Content-Type": "multipart/form-data",
+    },
+    withCredentials: true,
+})
+
 axiosInstance.interceptors.request.use(
+    async (config) => {
+        let token = useAuthStore.getState().accessToken;
+
+        if (token) {
+            if (isTokenExpired(token)) {
+                const newToken = await refreshAccessToken();
+
+                if (newToken) {
+                    token = newToken
+                } else {
+                    useAuthStore.getState().logout()
+
+                    if (typeof window !== 'undefined') {
+                        window.location.href = '/login'
+                    }
+                    return Promise.reject(new Error("session Expired please login again"))
+                }
+            }
+            config.headers["Authorization"] = `Bearer ${token}`
+        }
+        return config
+    },
+    (error) => {
+        return Promise.reject(error)
+    }
+);
+
+
+axiosInstanceMultiPart.interceptors.request.use(
     async (config) => {
         let token = useAuthStore.getState().accessToken;
 
