@@ -14,12 +14,12 @@ const ArticleEditWrapper = () => {
   useEffect(() => {
     const loadArticle = async () => {
       try {
-        const res:any = await fetchArticleById(id!);
+        const res: any = await fetchArticleById(id!);
 
-        console.log("****==>",res);
-        
+        console.log("****==>", res);
+
         if (res.success && res.data) {
-          const article = res.data.data ;
+          const article = res.data.data;
           setInitialData({
             title: article.title,
             description: article.description,
@@ -32,7 +32,7 @@ const ArticleEditWrapper = () => {
         }
       } catch (err) {
         console.log(err);
-        
+
         toast.error("Error loading article");
       } finally {
         setLoading(false);
@@ -56,13 +56,15 @@ const ArticleEditWrapper = () => {
       const res = await updateArticle(formData);
       if (res.success) {
         toast.success("Article updated successfully ✅");
-        navigate("/profile");
+        setTimeout(() => {
+          navigate("/profile");
+        }, 300);
       } else {
         toast.error(res.message ?? "Failed to update");
       }
     } catch (err) {
       console.log(err);
-      
+
       toast.error("Error updating article");
     }
   };

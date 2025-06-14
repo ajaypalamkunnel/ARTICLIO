@@ -1,7 +1,6 @@
 import {
   ChevronDown,
   LogOut,
-  Search,
   Settings,
   User,
   User2,
