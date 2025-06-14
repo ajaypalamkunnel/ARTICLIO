@@ -2,11 +2,13 @@ import * as dotenv from 'dotenv'
 import * as path from 'path';
 
 const env = process.env.NODE_ENV || 'development';
-const envFilePath = path.resolve(process.cwd(), `.env.${env}`)
-
-
-dotenv.config({ path: envFilePath })
-
+if (env === 'development') {
+  const envFilePath = path.resolve(process.cwd(), `.env.${env}`);
+  dotenv.config({ path: envFilePath });
+} else {
+  
+  dotenv.config(); 
+}
 
 export const config = {
     port: process.env.PORT || 5000,

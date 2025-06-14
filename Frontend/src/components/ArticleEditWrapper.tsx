@@ -56,9 +56,7 @@ const ArticleEditWrapper = () => {
       const res = await updateArticle(formData);
       if (res.success) {
         toast.success("Article updated successfully ✅");
-        setTimeout(() => {
-          navigate("/profile");
-        }, 300);
+        window.location.href = "/edit-article"
       } else {
         toast.error(res.message ?? "Failed to update");
       }
