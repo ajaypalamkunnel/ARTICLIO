@@ -23,11 +23,11 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const getUserProfile = async () => {
       try {
-        const response = await getProfile();
+        const response:any = await getProfile();
         console.log(">>>>>", response.data);
 
         if (response.success && response?.data) {
-          setUser(response.data?.data);
+          setUser(response.data.data);
         } else {
           toast("Profile not available");
         }
@@ -65,7 +65,7 @@ const Profile: React.FC = () => {
 
   const handleSaveProfile = async () => {
     // simply re-fetch profile after modal closes
-    const response = await getProfile();
+    const response:any = await getProfile();
     console.log(">>>>>", response.data);
 
     if (response.success && response?.data) {

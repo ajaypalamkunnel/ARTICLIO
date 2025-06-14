@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { API_PREFIX } from "../constants/apiRoutes";
 import type { LoginFormData } from "../pages/Login";
 import type { ApiResponse } from "../types/apiResponse";

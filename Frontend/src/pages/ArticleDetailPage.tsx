@@ -19,8 +19,8 @@ interface ArticleDetailPageProps {
   onBack?: () => void;
 }
 
-const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ onBack }) => {
-  const [userInteraction, setUserInteraction] = useState<string | null>(null);
+const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
+  
   const [isImageExpanded, setIsImageExpanded] = useState(false);
 
 
@@ -29,21 +29,6 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ onBack }) => {
 
   const article = location.state?.article as ArticleResponseDTO;
 
-  const handleLike = () => {
-    if (userInteraction === "like") {
-      setUserInteraction(null);
-    } else {
-      setUserInteraction("like");
-    }
-  };
-
-  const handleDislike = () => {
-    if (userInteraction === "dislike") {
-      setUserInteraction(null);
-    } else {
-      setUserInteraction("dislike");
-    }
-  };
 
   const handleShare = () => {
     if (navigator.share) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import type { GetUserProfileResponseDTO, UpdateUserProfileRequestDTO } from "../types/user";

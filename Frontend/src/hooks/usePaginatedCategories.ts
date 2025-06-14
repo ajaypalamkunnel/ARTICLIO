@@ -14,7 +14,7 @@ export const usePaginatedCategories = (initialLimit: number = 7) => {
 
     setLoading(true);
     try {
-      const response = await getallCategories(skip, limit);
+      const response:any = await getallCategories(skip, limit);
       if (response.success && response.data) {
         setCategories((prev) => [...prev, ...response.data!]);
         setSkip((prev) => prev + limit);

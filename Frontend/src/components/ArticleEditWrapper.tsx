@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchArticleById, updateArticle } from "../services/userService"; // 🆕 imported updateArticle
@@ -13,12 +14,12 @@ const ArticleEditWrapper = () => {
   useEffect(() => {
     const loadArticle = async () => {
       try {
-        const res = await fetchArticleById(id!);
+        const res:any = await fetchArticleById(id!);
 
         console.log("****==>",res);
         
         if (res.success && res.data) {
-          const article = res.data.data;
+          const article = res.data.data ;
           setInitialData({
             title: article.title,
             description: article.description,
@@ -30,6 +31,8 @@ const ArticleEditWrapper = () => {
           toast.error("Failed to load article");
         }
       } catch (err) {
+        console.log(err);
+        
         toast.error("Error loading article");
       } finally {
         setLoading(false);
@@ -58,6 +61,8 @@ const ArticleEditWrapper = () => {
         toast.error(res.message ?? "Failed to update");
       }
     } catch (err) {
+      console.log(err);
+      
       toast.error("Error updating article");
     }
   };

@@ -59,7 +59,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 
     
    } catch (error) {
+    console.log(error);
     
+
     toast.error("Failed to update like!");
    }
 
@@ -88,6 +90,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         setUserInteraction("dislike");
       }
     } catch (error) {
+      console.log(error);
+      
       toast.error("Failed to update dislike!");
     }
   };
@@ -102,6 +106,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 
       toast.success("Article blocked successfully");
     } catch (error) {
+      console.log(error);
+      
       toast.error("Failed to block article!");
     }
   };

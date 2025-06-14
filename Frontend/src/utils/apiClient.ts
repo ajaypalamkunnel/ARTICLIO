@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AxiosRequestConfig, Method } from "axios";
 import type { ApiResponse } from "../types/apiResponse";
 import axiosInstance from "./axiosInstance";

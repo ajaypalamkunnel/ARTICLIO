@@ -23,7 +23,7 @@ export interface IUser extends Document {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
-  isVerified: Boolean
+  isVerified: boolean
   refreshToken?: string
 }
 

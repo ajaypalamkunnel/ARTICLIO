@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { changePassword } from "../services/userService";

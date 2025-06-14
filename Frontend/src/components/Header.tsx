@@ -37,7 +37,10 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
+            <a href="/">
             <h1 className="text-xl font-bold text-gray-900">Articlio Feeds</h1>
+
+            </a>
           </div>
 
           {/* Search Bar */}

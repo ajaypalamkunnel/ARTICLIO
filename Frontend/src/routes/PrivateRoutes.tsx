@@ -1,4 +1,3 @@
-import React from 'react'
 import useAuthStore from '../store/userStore'
 import { Navigate, Outlet } from 'react-router-dom'
 import Header from '../components/Header'
