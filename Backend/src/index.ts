@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 const app = express();
 const PORT = config.port;
 
-const allowedOrigins = ['http://localhost:5173', 'https://articlio-1.onrender.com'];
+const allowedOrigins = ['http://localhost:5173', 'https://articlio.vercel.app', 'https://articlio-1.onrender.com'];
 
 app.use(
     cors({
@@ -24,7 +24,7 @@ app.use(
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"],
     })
-    
+
 )
 app.use(cookieParser())
 app.use(express.json({ limit: "100mb" }));
@@ -35,7 +35,7 @@ app.get('/', (_req, res) => {
     res.send('Hello, TypeScript + Express + MongoDB with Environments!');
 });
 
-app.use(ROUTE_PATH.USER,userRoute)
+app.use(ROUTE_PATH.USER, userRoute)
 
 const startServer = async () => {
     try {
