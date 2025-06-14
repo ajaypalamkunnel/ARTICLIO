@@ -1,4 +1,5 @@
-import { CreateArticleDTO } from "../../../dtos/article.dto";
+import { CreateArticleDTO, UpdateArticleRequestDTO } from "../../../dtos/article.dto";
+import { ArticleByIdResponseDTO } from "../../../dtos/articleResponse.dto";
 import { InteractionRequestDTO, UserArticleInteractionDTO } from "../../../dtos/InteractionDTO";
 import { IArticle } from "../../../model/Article/Article";
 import { ICategory } from "../../../model/Category/Category";
@@ -17,16 +18,19 @@ export interface IArticleService {
     ): Promise<{ articles: IArticle[]; total: number; totalPages: number; currentPage: number }>
 
     getMyArticles(
-        userId:string,
-        page:number,
-        limit:number
-    ):Promise<{articles:IArticle[];total: number; totalPages: number; currentPage: number}>
+        userId: string,
+        page: number,
+        limit: number
+    ): Promise<{ articles: IArticle[]; total: number; totalPages: number; currentPage: number }>
 
 
     handleInteraction(userId: string, interaction: InteractionRequestDTO): Promise<void>;
 
     getUserInteractions(userId: string, articleIds: string[]): Promise<UserArticleInteractionDTO[]>
 
+    updateArticle(userId: string, data: UpdateArticleRequestDTO): Promise<void>;
+
+    getArticleById(articleId: string): Promise<ArticleByIdResponseDTO | null>
 
 
 }

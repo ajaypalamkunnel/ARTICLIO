@@ -1,12 +1,10 @@
 import { 
   ArrowLeft, 
   Calendar, 
-  Clock, 
-  Eye, 
-  Heart, 
+  
   Share2, 
   Tag, 
-  ThumbsDown, 
+
   User,
   BookOpen,
 } from "lucide-react";
@@ -215,7 +213,7 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ onBack }) => {
         )}
 
         {/* Interaction buttons */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        {/* <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center space-x-4">
               <button
@@ -254,7 +252,7 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ onBack }) => {
               <span>Share Article</span>
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

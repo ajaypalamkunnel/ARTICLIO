@@ -26,3 +26,50 @@ export interface IUser extends Document {
   isVerified: Boolean
   refreshToken?: string
 }
+
+
+export interface UserData {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  dob: Date;
+  email: string;
+  preferences: string[];
+}
+
+
+
+// DTO to be used in both frontend & backend
+
+export interface CategoryDTO {
+  _id: string;
+  name: string;
+}
+
+export interface GetUserProfileResponseDTO {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dob: Date;
+  profileImage?: string;
+  preferences: CategoryDTO[]; 
+}
+
+
+
+export interface UpdateUserProfileRequestDTO {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  dob: Date | string;
+  profileImage?: string;
+  preferences: string[];  // Category ObjectId array from frontend
+}
+
+
+export interface ChangePasswordRequestDTO {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword?:string
+}

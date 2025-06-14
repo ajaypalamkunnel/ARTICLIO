@@ -6,6 +6,9 @@ import { IInteraction, InteractionModel } from "../../../model/Interaction/Inter
 import { CustomError } from "../../../utils/CustomError";
 import { BaseRepository } from "../../base/BaseRepository";
 import { IArticleRepository } from "../../interface/Article/IArticleRepository";
+import { PopulatedArticle, UpdateArticleRequestDTO } from "../../../dtos/article.dto";
+import { ArticleByIdResponseDTO } from "../../../dtos/articleResponse.dto";
+import { IUser } from "../../../model/User/User";
 
 export class ArticleRepository
     extends BaseRepository<IArticle>
@@ -113,6 +116,36 @@ export class ArticleRepository
             articleId: { $in: articleIds }
         });
     }
+
+    async updateArticle(articleId: string, data: UpdateArticleRequestDTO): Promise<void> {
+
+        console.log("articleid :",articleId);
+        console.log("data :",data);
+        
+
+        await ArticleModel.findByIdAndUpdate(articleId, {
+            $set: {
+                title: data.title,
+                description: data.description,
+                tags: data.tags,
+                category: data.category,
+                images: data.images,
+                updatedAt: new Date()
+            }
+        })
+    }
+
+
+    async findArticleById(articleId: string): Promise<PopulatedArticle | null> {
+    const result = await ArticleModel.findById(new Types.ObjectId(articleId))
+        .populate<{ category: ICategory }>("category")
+        .populate<{ author: IUser }>("author")
+        .lean();
+
+    return result as PopulatedArticle | null;
+}
+
+
 
 
 

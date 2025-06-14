@@ -7,4 +7,9 @@ export interface IUserController{
     verifyOtp(req: Request, res: Response): Promise<Response>
     postLogin(req: Request, res: Response): Promise<Response>
     logout(req: Request, res: Response): Promise<Response>
+     getUserProfile(req: Request, res: Response): Promise<Response>;
+     changePassword(req: Request, res: Response): Promise<Response>
+    updateUserProfile(req: Request, res: Response): Promise<Response>;
+    renewAuthTokens(req: Request, res: Response): Promise<void>;
+    
 }

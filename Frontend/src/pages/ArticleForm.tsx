@@ -13,7 +13,11 @@ import {
   Loader2,
 } from "lucide-react";
 import type { ArticleFormData } from "../types/article";
-import { getCategories, postArticle } from "../services/userService";
+import {
+  getCategories,
+  postArticle,
+  updateArticle,
+} from "../services/userService";
 import { toast } from "react-toastify";
 
 // Types
@@ -24,6 +28,7 @@ interface Category {
 }
 
 interface ArticleFormProps {
+  articleId?: string;
   initialData?: {
     title?: string;
     description?: string;
@@ -32,15 +37,15 @@ interface ArticleFormProps {
     images?: string[];
   };
   isEdit?: boolean;
-  onSubmit: (data: ArticleFormData) => Promise<void>;
+  onSubmit:  (data: ArticleFormData & { image?: File }) => Promise<void>;
   onCancel?: () => void;
   isLoading?: boolean;
 }
 
 const ArticleForm: React.FC<ArticleFormProps> = ({
+  articleId,
   initialData,
   isEdit = false,
-  onSubmit,
   onCancel,
   isLoading = false,
 }) => {
@@ -115,6 +120,10 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
     }
   };
 
+  
+
+
+
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -175,12 +184,22 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         formData.append("images", imageFile);
       }
 
-      const response = await postArticle(formData);
-
-      if (response.success) {
-        toast.success("Article published successfully ✅");
+      if (isEdit) {
+        formData.append("articleId", articleId!);
+        const response = await updateArticle(formData);
+        if (response.success) {
+          toast.success("Article updated successfully ✅");
+        } else {
+          toast.error(response.message ?? "Failed to update article");
+        }
       } else {
-        toast.error(response.message ?? "Failed to publish article");
+        const response = await postArticle(formData);
+
+        if (response.success) {
+          toast.success("Article published successfully ✅");
+        } else {
+          toast.error(response.message ?? "Failed to publish article");
+        }
       }
     } catch (error: any) {
       console.error("Form submission error:", error);

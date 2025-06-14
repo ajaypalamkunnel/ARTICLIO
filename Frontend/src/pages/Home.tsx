@@ -14,22 +14,7 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  const handleLike = (articleId: string, isLiked: boolean) => {
-    console.log("Like functionality will be implemented", articleId, isLiked);
-  };
-
-  const handleDislike = (articleId: string, isDisliked: boolean) => {
-    console.log(
-      "Dislike functionality will be implemented",
-      articleId,
-      isDisliked
-    );
-  };
-
-  const handleBlock = (articleId: string) => {
-    console.log("Block functionality will be implemented", articleId);
-  };
-
+  
   const loadArticles = async () => {
     try {
       setLoading(true);

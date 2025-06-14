@@ -30,7 +30,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   const [likes, setLikes] = useState(article.stats.likes); // 
   const [dislikes, setDislikes] = useState(article.stats.dislikes); // 
 
-  console.log("******",article.stats.dislikes);
+  
   
 
   const navigate = useNavigate();
@@ -59,6 +59,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 
     
    } catch (error) {
+    
     toast.error("Failed to update like!");
    }
 

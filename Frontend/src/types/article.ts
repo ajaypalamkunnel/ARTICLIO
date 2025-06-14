@@ -1,3 +1,5 @@
+import type { CategoryDTO } from "./user";
+
 export interface ArticleFormData {
   title: string;
   description: string;
@@ -42,4 +44,46 @@ export interface GetArticlesResponse {
   total: number;
   totalPages: number;
   currentPage: number;
+}
+
+
+export interface GetMyArticlesResponseDTO {
+  articles: ArticleResponseDTO[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+}
+
+
+
+
+
+export interface UpdateArticleRequestDTO {
+  articleId: string;
+  title: string;
+  description: string;
+  tags: string[];
+  category: string;
+  images: string[];  // Cloudinary or file paths from multer
+}
+
+
+export interface UserDTO {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    profileImage: string;
+}
+
+export interface ArticleByIdResponseDTO {
+  id?: string;
+  title: string;
+  description: string;
+  tags: string[];
+  images: string[];
+  category: CategoryDTO;
+  author: UserDTO;
+  createdAt: Date;
+  updatedAt: Date;
 }

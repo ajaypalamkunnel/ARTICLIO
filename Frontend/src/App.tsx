@@ -8,7 +8,8 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 import PublicRoute from "./routes/PublicRoutes";
 import ArticleForm from "./pages/ArticleForm";
 import ArticleDetailPage from "./pages/ArticleDetailPage";
-
+import Profile from "./pages/Profile";
+import ArticleEditWrapper from "./components/ArticleEditWrapper";
 
 function App() {
   return (
@@ -17,25 +18,26 @@ function App() {
         {/* Protected routes */}
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<Home />} />
-           <Route
-          path="/create-article"
-          element={
-            <ArticleForm
-              onSubmit={async (data) => console.log("Submitted:", data)}
-            />
-          }
-        />
+          <Route
+            path="/create-article"
+            element={
+              <ArticleForm
+                onSubmit={async (data) => console.log("Submitted:", data)}
+              />
+            }
+          />
+          <Route path="/edit-article/:id" element={<ArticleEditWrapper />} />
 
-        <Route path="/view-detail/:id" element={<ArticleDetailPage />} />
-
+          <Route path="/view-detail/:id" element={<ArticleDetailPage />} />
         </Route>
+          <Route path="/profile" element={<Profile />} />
 
         {/* Public routes */}
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
         </Route>
-       
+
         <Route path="/otp-verification" element={<OTPVerification />} />
       </Routes>
       <ToastContainer />

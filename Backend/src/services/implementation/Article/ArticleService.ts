@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { ERROR_MESSAGES, StatusCode } from "../../../constants/statusCode";
-import { CreateArticleDTO } from "../../../dtos/article.dto";
+import { CreateArticleDTO, UpdateArticleRequestDTO } from "../../../dtos/article.dto";
 import { InteractionRequestDTO, UserArticleInteractionDTO } from "../../../dtos/InteractionDTO";
 import { ArticleModel, IArticle } from "../../../model/Article/Article";
 import { ICategory } from "../../../model/Category/Category";
@@ -8,6 +8,7 @@ import { IArticleRepository } from "../../../repositories/interface/Article/IArt
 import { IUserRepositroy } from "../../../repositories/interface/User/IUserRepository";
 import { CustomError } from "../../../utils/CustomError";
 import { IArticleService } from "../../interface/Article/IArticleService";
+import { ArticleByIdResponseDTO } from "../../../dtos/articleResponse.dto";
 
 
 class ArticleService implements IArticleService {
@@ -259,6 +260,74 @@ class ArticleService implements IArticleService {
 
         }
     }
+
+
+    async updateArticle(userId: string, data: UpdateArticleRequestDTO): Promise<void> {
+        try {
+
+
+
+            const existingArticle = await this._articleRepository.findById(data.articleId)
+
+            if (!existingArticle) {
+                throw new CustomError("Article not found", StatusCode.NOT_FOUND)
+            }
+
+
+            if (existingArticle.author.toString() !== userId) {
+                throw new CustomError("Unauthorized to update this article", StatusCode.UNAUTHORIZED);
+            }
+
+            await this._articleRepository.updateArticle(data.articleId, data)
+
+
+
+        } catch (error) {
+
+            if (error instanceof CustomError) {
+                throw error
+            } else {
+                throw new CustomError("article updation error", StatusCode.INTERNAL_SERVER_ERROR)
+            }
+
+        }
+    }
+
+
+    async getArticleById(articleId: string): Promise<ArticleByIdResponseDTO | null> {
+        try {
+
+            const article = await this._articleRepository.findArticleById(articleId);
+            if (!article) return null;
+
+            return {
+                id: article._id.toString(),
+                title: article.title,
+                description: article.description,
+                tags: article.tags,
+                images: article.images,
+                createdAt: article.createdAt,
+                updatedAt: article.updatedAt,
+                category: {
+                    _id: article.category._id.toString(),
+                    name: article.category.name,
+                },
+                author: {
+                    _id: article.author._id.toString(),
+                    firstName: article.author.firstName,
+                    lastName: article.author.lastName,
+                    email: article.author.email,
+                    profileImage: article.author.profileImage || "",
+                },
+            };
+
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+
 
 
 

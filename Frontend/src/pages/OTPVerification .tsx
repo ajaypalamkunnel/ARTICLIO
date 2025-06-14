@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Clock, ArrowLeft, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/userStore";
-import { emit } from "process";
 import { toast } from "react-toastify";
 import { resendOtp, verifyOtp } from "../services/userService";
 

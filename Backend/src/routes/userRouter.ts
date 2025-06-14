@@ -39,6 +39,10 @@ router.post("/login",(req,res)=>{
     userController.postLogin(req,res)
 })
 
+router.post("/refresh-token",(req,res)=>{
+    userController.renewAuthTokens(req,res)
+})
+
 router.post("/post-article",authMiddleWare,upload.array("images",5),(req,res)=>{
     articleController.createArticle(req,res)
 })
@@ -65,5 +69,32 @@ router.post('/interact',authMiddleWare,(req,res)=>{
 router.post("/get-interactions",authMiddleWare,(req,res)=>{
     articleController.getUserInteractions(req,res)
 })
+
+router.get("/my-profile",authMiddleWare,(req,res)=>{
+    userController.getUserProfile(req,res)
+})
+
+
+router.post("/password-change",authMiddleWare,(req,res)=>{
+    userController.changePassword(req,res)
+})
+
+router.put("/update-profile",authMiddleWare,(req,res)=>{
+    userController.updateUserProfile(req,res)
+})
+
+
+router.put("/update-article",authMiddleWare,upload.array("images",5),(req,res)=>{
+    articleController.updateArticle(req,res)
+})
+
+router.get("/article/:id", authMiddleWare,(req, res) =>{
+    articleController.getArticleById(req, res)
+});
+
+router.post("/logout",async(req,res)=>{
+    await userController.logout(req,res)
+})
+
 
 export default router

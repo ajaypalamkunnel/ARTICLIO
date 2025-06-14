@@ -1,10 +1,10 @@
 // import { API_PREFIX } from "../constants/apiRoutes";
 import type { LoginFormData } from "../pages/Login";
 import type { ApiResponse } from "../types/apiResponse";
-import type {  GetArticlesResponse } from "../types/article";
-import type { Category, GetCategoriesResponse } from "../types/category";
+import type {  ArticleByIdResponseDTO, GetArticlesResponse, GetMyArticlesResponseDTO, } from "../types/article";
+import type { GetCategoriesResponse } from "../types/category";
 import type { getIntractionsRequestID, InteractionRequestDTO, UserArticleInteractionResponse } from "../types/interactions";
-import type { IUser, RegistrationFormData } from "../types/user";
+import type { ChangePasswordRequestDTO, GetUserProfileResponseDTO, IUser, RegistrationFormData, UpdateUserProfileRequestDTO } from "../types/user";
 import { apiRequest } from "../utils/apiClient";
 import { apiRequestMultiPart } from "../utils/apiClientMulitPart";
 
@@ -105,5 +105,65 @@ export const articleInteraction = async(data:InteractionRequestDTO):Promise<ApiR
         "/interact",
         "POST",
         data
+    )
+}
+
+export const getProfile = async():Promise<ApiResponse<GetUserProfileResponseDTO>>=>{
+   const response =  await apiRequest<GetUserProfileResponseDTO>(
+        "/my-profile",
+        "GET",
+    )
+    console.log(":::::",response);
+    
+     return response
+}
+
+export const getMyArticles = async():Promise<ApiResponse<GetMyArticlesResponseDTO>>=>{
+    return apiRequest<GetMyArticlesResponseDTO>(
+        "/my-articles",
+        "GET",
+    )
+}
+
+
+export const changePassword = async(data:ChangePasswordRequestDTO):Promise<ApiResponse<void>>=>{
+    return apiRequest(
+        "/password-change",
+        "POST",
+        data
+    )
+}
+
+
+export const updateProfile = async(data:UpdateUserProfileRequestDTO):Promise<ApiResponse<void>>=>{
+    return apiRequest(
+        "/update-profile",
+        "PUT",
+        data
+    )
+}
+
+
+export const updateArticle = async(data:any):Promise<ApiResponse<void>>=>{
+    return apiRequest(
+        "/update-article",
+        "PUT",
+        data
+    )
+}
+
+
+export const fetchArticleById = async(id:string):Promise<ApiResponse<ArticleByIdResponseDTO>>=>{
+    return apiRequest<ArticleByIdResponseDTO>(
+        `/article/${id}`,
+        "GET"
+    )
+}
+
+
+export const userLogout = async():Promise<ApiResponse<void>>=>{
+    return apiRequest(
+        `/logout`,
+        "POST"
     )
 }

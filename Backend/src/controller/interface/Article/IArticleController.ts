@@ -10,5 +10,7 @@ export interface IArticleController{
     getMyArticles(req: Request, res: Response): Promise<Response>
     interact(req: Request, res: Response): Promise<Response>;
     getUserInteractions(req: Request, res: Response): Promise<Response>
+    updateArticle(req: Request, res: Response): Promise<Response>;
+    getArticleById(req: Request, res: Response): Promise<Response>
 
 }

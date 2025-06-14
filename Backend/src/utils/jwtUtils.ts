@@ -10,14 +10,14 @@ class JWTUtils {
 
     static generateAccessToken(payload: object): string {
     
-        return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "15m" })
+        return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "40m" })
     }
 
      static generateRefreshToken(payload:object):string{
         return jwt.sign(payload,REFRESH_TOKEN_SECRET,{expiresIn:'7d'})
     }
 
-    static verifyToken(token:string,isRefereshToken?:false):string|JwtPayload|null{
+    static verifyToken(token:string,isRefereshToken?:boolean):string|JwtPayload|null{
           try {
             const secret = isRefereshToken ? REFRESH_TOKEN_SECRET : ACCESS_TOKEN_SECRET
 

@@ -10,6 +10,8 @@ export async function apiRequest<T>(
     config?: AxiosRequestConfig
 ): Promise<ApiResponse<T>> {
     try {
+        console.log("hellooo");
+        
         const response = await axiosInstance.request<ApiResponse<T>>({
             url,
             method,
