@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 const app = express();
 const PORT = config.port;
 
-const allowedOrigins = ['http://localhost:5173', 'https://your-prod-frontend.com'];
+const allowedOrigins = ['http://localhost:5173', 'https://articlio-1.onrender.com'];
 
 app.use(
     cors({
