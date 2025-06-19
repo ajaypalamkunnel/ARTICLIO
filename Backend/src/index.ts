@@ -6,6 +6,7 @@ import { ROUTE_PATH } from "./constants/routePath";
 import userRoute from "./routes/userRouter"
 import morganMiddleware from "./middleware/morganMiddleware";
 import cookieParser from "cookie-parser";
+
 const app = express();
 const PORT = config.port;
 

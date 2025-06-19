@@ -24,7 +24,12 @@ export const config = {
     smtp_pass:process.env.SMTP_PASS as string,
     cloudinary_cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
     cloudinary_api_key:process.env.CLOUDINARY_API_KEY,
-    cloudinary_api_secret:process.env.CLOUDINARY_API_SECRET
+    cloudinary_api_secret:process.env.CLOUDINARY_API_SECRET,
+    local_origin:process.env.LOCAL_ORIGIN,
+    vercel_origin:process.env.VERCEL_ORGIN,
+    render_origin:process.env.RENDER_ORGIN
+
+    
 
 
 

@@ -146,9 +146,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           {article.title}
         </h3>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-          {article.description}
-        </p>
+        <div
+  className="prose prose-blue max-w-none text-gray-800 line-clamp-3"
+  dangerouslySetInnerHTML={{ __html: article.description }}
+/>
+
 
         {article.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-4">

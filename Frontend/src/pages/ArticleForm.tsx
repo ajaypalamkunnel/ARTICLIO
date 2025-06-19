@@ -20,6 +20,8 @@ import {
   updateArticle,
 } from "../services/userService";
 import { toast } from "react-toastify";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 // Types
 
@@ -38,7 +40,7 @@ interface ArticleFormProps {
     images?: string[];
   };
   isEdit?: boolean;
-  onSubmit:  (data: ArticleFormData & { image?: File }) => Promise<void>;
+  onSubmit: (data: ArticleFormData & { image?: File }) => Promise<void>;
   onCancel?: () => void;
   isLoading?: boolean;
 }
@@ -121,10 +123,6 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
     }
   };
 
-  
-
-
-
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -194,6 +192,10 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
           toast.error(response.message ?? "Failed to update article");
         }
       } else {
+        for (const [k, v] of formData.entries()) {
+          console.log(k, v);
+        }
+
         const response = await postArticle(formData);
 
         if (response.success) {
@@ -346,16 +348,20 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
                     },
                   }}
                   render={({ field }) => (
-                    <textarea
-                      {...field}
-                      rows={8}
-                      placeholder="Write your article content here..."
-                      className={`w-full px-4 py-3 rounded-lg border text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none ${
+                    <div
+                      className={`border rounded-lg ${
                         errors.description
                           ? "border-red-300 bg-red-50"
                           : "border-gray-300 bg-white"
                       }`}
-                    />
+                    >
+                      <ReactQuill
+                        theme="snow"
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Write your article content here..."
+                      />
+                    </div>
                   )}
                 />
                 {errors.description && (

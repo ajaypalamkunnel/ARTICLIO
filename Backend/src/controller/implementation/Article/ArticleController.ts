@@ -4,12 +4,13 @@ import { IArticleController } from "../../interface/Article/IArticleController";
 import { ERROR_MESSAGES, StatusCode } from "../../../constants/statusCode";
 import { CustomError } from "../../../utils/CustomError";
 import { Types } from "mongoose";
-import UserRepository from "../../../repositories/implementation/User/UserRepository";
 import { IUserService } from "../../../services/interface/User/IUserService";
 import { ArticleResponseDTO } from "../../../dtos/articleResponse.dto";
 import { mapArticleToDTO } from "../../../mapper/article.mapper";
 import { InteractionRequestDTO } from "../../../dtos/InteractionDTO";
 import { UpdateArticleRequestDTO } from "../../../dtos/article.dto";
+import { JSDOM } from 'jsdom'
+import createDOMPurify from 'dompurify'
 
 class ArtileController implements IArticleController {
     private _articleService: IArticleService;
@@ -72,8 +73,18 @@ class ArtileController implements IArticleController {
             const { title, description, tags, category } = req.body;
             const files = req.files as Express.Multer.File[];
             const userId = req.user?.userId;
-
             console.log("description :", description);
+
+            const window = new JSDOM('').window;
+            const dompurify = createDOMPurify(window)
+
+            const santizedDescription = dompurify.sanitize(description, {
+                FORBID_ATTR: ['style'], // 🧼 removes inline styles like font-size, line-height
+                ALLOWED_TAGS: [
+                    'p', 'h1', 'h2', 'ul', 'li', 'strong', 'em', 'a', 'ol', 'blockquote'
+                ],
+                ALLOWED_ATTR: ['href', 'rel', 'target'],
+            });
 
             console.log("tage", tags);
             console.log("Filer :", files);
@@ -81,7 +92,7 @@ class ArtileController implements IArticleController {
 
             const article = await this._articleService.createArticle({
                 title,
-                description,
+                description: santizedDescription,
                 tags: tags ? tags.split(",").map((tag: string) => tag.trim()) : [],
                 category,
                 author: new Types.ObjectId(userId),

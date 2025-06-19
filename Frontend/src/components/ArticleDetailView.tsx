@@ -41,9 +41,10 @@ const ArticleDetailView: React.FC<{
           </div>
         </header>
 
-        <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-          {article.description}
-        </p>
+        <div
+          className="prose prose-blue max-w-none text-gray-800"
+          dangerouslySetInnerHTML={{ __html: article.description }}
+        />
       </article>
     </div>
   );

@@ -1,34 +1,19 @@
-import { 
-  ArrowLeft, 
-  Calendar, 
-  
-  Share2, 
-  Tag, 
-
-  User,
-  BookOpen,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Share2, Tag, User, BookOpen } from "lucide-react";
 import { useState } from "react";
 import type { ArticleResponseDTO } from "../types/article";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
-
 interface ArticleDetailPageProps {
-
   onBack?: () => void;
 }
 
 const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
-  
   const [isImageExpanded, setIsImageExpanded] = useState(false);
-
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const article = location.state?.article as ArticleResponseDTO;
-
 
   const handleShare = () => {
     if (navigator.share) {
@@ -40,7 +25,7 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      alert("Link copied to clipboard!");
     }
   };
 
@@ -52,9 +37,6 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
     );
   }
 
-  
-
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header with back button */}
@@ -62,13 +44,13 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <button
-              onClick={()=>navigate(-1)}
+              onClick={() => navigate(-1)}
               className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-5 h-5" />
               <span className="font-medium">Back to Articles</span>
             </button>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleShare}
@@ -92,7 +74,7 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
               src={article.images[0]}
               alt={article.title}
               className={`w-full h-full object-cover cursor-pointer transition-transform duration-300 ${
-                isImageExpanded ? 'scale-105' : 'hover:scale-105'
+                isImageExpanded ? "scale-105" : "hover:scale-105"
               }`}
               onClick={() => setIsImageExpanded(!isImageExpanded)}
             />
@@ -108,15 +90,13 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
                 </span>
                 <div className="flex items-center text-sm text-gray-500">
                   <Calendar className="w-4 h-4 mr-1" />
-                  {new Date(article.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
+                  {new Date(article.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </div>
               </div>
-              
-            
             </div>
 
             {/* Title */}
@@ -125,16 +105,18 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
             </h1>
 
             {/* Description */}
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              {article.description}
-            </p>
+
+            <div
+              className="prose prose-blue max-w-none text-gray-800"
+              dangerouslySetInnerHTML={{ __html: article.description }}
+            />
 
             {/* Tags */}
             {article.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {article.tags.map((tag, index) => (
-                  <span 
-                    key={index} 
+                  <span
+                    key={index}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors cursor-pointer"
                   >
                     <Tag className="w-3 h-3 mr-1" />
@@ -160,7 +142,7 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
                 )}
                 <div>
                   <p className="font-medium text-gray-900">
-                    {article.author.firstName} 
+                    {article.author.firstName}
                   </p>
                   <p className="text-sm text-gray-600">Author</p>
                 </div>
@@ -173,19 +155,24 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = () => {
         <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 mb-6">
           <div className="flex items-center mb-6">
             <BookOpen className="w-5 h-5 text-gray-600 mr-2" />
-            <h2 className="text-xl font-semibold text-gray-900">Article Content</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Article Content
+            </h2>
           </div>
-          
-         
         </div>
 
         {/* Additional images */}
         {article.images.length > 1 && (
           <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Related Images</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Related Images
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {article.images.slice(1).map((image, index) => (
-                <div key={index} className="aspect-video overflow-hidden rounded-lg">
+                <div
+                  key={index}
+                  className="aspect-video overflow-hidden rounded-lg"
+                >
                   <img
                     src={image}
                     alt={`Related image ${index + 1}`}
