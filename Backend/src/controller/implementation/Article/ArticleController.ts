@@ -79,7 +79,7 @@ class ArtileController implements IArticleController {
             const dompurify = createDOMPurify(window)
 
             const santizedDescription = dompurify.sanitize(description, {
-                FORBID_ATTR: ['style'], // 🧼 removes inline styles like font-size, line-height
+                FORBID_ATTR: ['style'], //  removes inline styles like font-size, line-height
                 ALLOWED_TAGS: [
                     'p', 'h1', 'h2', 'ul', 'li', 'strong', 'em', 'a', 'ol', 'blockquote'
                 ],

@@ -15,57 +15,46 @@ import { toast } from "react-toastify";
 
 interface ArticleCardProps {
   article: ArticleResponseDTO;
- 
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({
-  article,
-}) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   const [userInteraction, setUserInteraction] = useState<string | null>(() => {
     if (article.userInteraction?.like) return "like";
     if (article.userInteraction?.dislike) return "dislike";
     return null;
   });
 
-  const [likes, setLikes] = useState(article.stats.likes); // 
-  const [dislikes, setDislikes] = useState(article.stats.dislikes); // 
-
-  
-  
+  const [likes, setLikes] = useState(article.stats.likes); //
+  const [dislikes, setDislikes] = useState(article.stats.dislikes); //
 
   const navigate = useNavigate();
 
-  const handleLike =async () => {
-   const isLiked = userInteraction === "like";
-   const action = isLiked ? "remove" : "add";
+  const handleLike = async () => {
+    const isLiked = userInteraction === "like";
+    const action = isLiked ? "remove" : "add";
 
-   try {
-    await articleInteraction({
-      articleId:article.id,
-      type:"like",
-      action
-    })
+    try {
+      await articleInteraction({
+        articleId: article.id,
+        type: "like",
+        action,
+      });
 
-    if(isLiked){
-      setLikes((prev)=>prev-1)
-      setUserInteraction(null)
-    }else{
-      setLikes((prev) => prev + 1);
+      if (isLiked) {
+        setLikes((prev) => prev - 1);
+        setUserInteraction(null);
+      } else {
+        setLikes((prev) => prev + 1);
         if (userInteraction === "dislike") {
           setDislikes((prev) => prev - 1);
         }
         setUserInteraction("like");
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Failed to update like!");
     }
-
-    
-   } catch (error) {
-    console.log(error);
-    
-
-    toast.error("Failed to update like!");
-   }
-
-
   };
 
   const handleDislike = async () => {
@@ -91,7 +80,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       }
     } catch (error) {
       console.log(error);
-      
+
       toast.error("Failed to update dislike!");
     }
   };
@@ -107,7 +96,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       toast.success("Article blocked successfully");
     } catch (error) {
       console.log(error);
-      
+
       toast.error("Failed to block article!");
     }
   };
@@ -117,6 +106,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 
     navigate(`/view-detail/${article.id}`, { state: { article } });
   };
+
+  const cleanDescription = article.description.replace(/<[^>]+>/g, "");
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
@@ -146,12 +137,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           {article.title}
         </h3>
 
-        <div
-  className="prose prose-blue max-w-none text-gray-800 line-clamp-3"
-  dangerouslySetInnerHTML={{ __html: article.description }}
-/>
-
-
+        <div className="prose prose-blue max-w-none text-gray-800 line-clamp-3">
+          <p>{cleanDescription}</p>
+        </div>
         {article.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-4">
             {article.tags.slice(0, 3).map((tag, index) => (
@@ -219,7 +207,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
                   userInteraction === "dislike" ? "fill-current" : ""
                 }`}
               />
-             <span>{dislikes}</span>
+              <span>{dislikes}</span>
             </button>
 
             <button
@@ -235,7 +223,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             className="flex items-center space-x-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm cursor-pointer"
           >
             <Eye className="w-4 h-4" />
-            <span>Read More</span>
+            <span>Read More..</span>
           </button>
         </div>
       </div>
