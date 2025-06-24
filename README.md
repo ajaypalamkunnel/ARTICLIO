@@ -205,7 +205,7 @@ MIT License - Feel free to use and contribute.
 **Ajay PS**
 
 - GitHub: [ajaypalamkunnel](https://github.com/ajaypalamkunnel)
-- Email: your.email@example.com
+- Email: ajaypalamkunnel45@gmail.com
 
 ---
 
